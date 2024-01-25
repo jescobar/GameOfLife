@@ -1,0 +1,116 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "group": "build",
+            "args": [
+                "build",
+                "${workspaceFolder}/LifeApi.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "clean",
+            "command": "dotnet",
+            "type": "process",
+            "group": "build",
+            "args": [
+                "clean",
+                "${workspaceFolder}/LifeApi.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "create migration",
+            "command": "dotnet",
+            "type": "process",
+            "group": "build",
+            "options": {"cwd": "${workspaceFolder}"},
+            "args": [
+                "ef",
+                "--project",
+                "LifeApi.data/",
+                "--startup-project",
+                "LifeApi.WebApi/",
+                "migrations",
+                "add",
+                "\"${input:migrationName}\"",
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "delete latest migration",
+            "command": "dotnet",
+            "type": "process",
+            "group": "build",
+            "options": {"cwd": "${workspaceFolder}"},
+            "args": [
+                "ef",
+                "--project",
+                "LifeApi.data/",
+                "--startup-project",
+                "LifeApi.WebApi/",
+                "migrations",
+                "remove"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run migration",
+            "command": "dotnet",
+            "type": "process",
+            "group": "build",
+            "options": {"cwd": "${workspaceFolder}"},
+            "args": [
+                "ef",
+                "--project",
+                "LifeApi.data/",
+                "--startup-project",
+                "LifeApi.WebApi/",
+                "database",
+                "update",
+                "\"${input:migrationName}\"",
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/LifeApi.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watch",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "--project",
+                "${workspaceFolder}/LifeApi.sln"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "migrationName",
+            "type": "promptString",
+            "default": "",
+            "description": "The Migration Name"
+        }
+    ]
+}
